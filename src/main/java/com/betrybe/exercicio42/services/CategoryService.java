@@ -1,7 +1,6 @@
 package com.betrybe.exercicio42.services;
 
 import com.betrybe.exercicio42.models.entities.Category;
-import com.betrybe.exercicio42.models.entities.Product;
 import com.betrybe.exercicio42.models.repositories.CategoryRepository;
 import java.util.Collections;
 import java.util.List;
@@ -44,10 +43,10 @@ public class CategoryService {
     return categoryRepository.findById(id);
   }
 
-  public List<Category> getAllCategory () {
+  public List<Category> getAllCategories () {
     return categoryRepository.findAll();
   }
-}
+
 
 
 }
