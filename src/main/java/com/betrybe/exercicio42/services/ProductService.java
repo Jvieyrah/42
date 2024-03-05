@@ -26,7 +26,7 @@ public class ProductService {
       Product productFromDb = optionalProduct.get();
       productFromDb.setName(product.getName());
       productFromDb.setPrice(product.getPrice());
-      Product updatedProduct = productRepository.save(product);
+      Product updatedProduct = productRepository.save(productFromDb);
       return Optional.of(updatedProduct);
     }
     return optionalProduct;
