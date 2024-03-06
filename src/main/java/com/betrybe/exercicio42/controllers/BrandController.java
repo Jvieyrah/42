@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,14 +31,14 @@ public class BrandController {
   }
 
   @PostMapping
-  ResponseEntity<ResponseDTO<Brand>> createBrand(BrandDTO brandDTO) {
+  ResponseEntity<ResponseDTO<Brand>> createBrand(@RequestBody BrandDTO brandDTO) {
     Brand brand = brandService.insertBrand(brandDTO.toBrand());
     ResponseDTO<Brand> newBrand = new ResponseDTO<>("Marca criada com sucesso!", brand);
     return ResponseEntity.status(HttpStatus.CREATED).body(newBrand);
   }
 
   @PutMapping("/{id}")
-  ResponseEntity<ResponseDTO<Brand>> updateBrand(@PathVariable Long id, BrandDTO brandDTO) {
+  ResponseEntity<ResponseDTO<Brand>> updateBrand(@PathVariable Long id, @RequestBody BrandDTO brandDTO) {
     Optional<Brand> brand = brandService.updateBrand(id, brandDTO.toBrand());
     if (brand.isEmpty()) {
       ResponseDTO<Brand> notFoundBrand = new ResponseDTO<>("Marca não encontrada!", null);

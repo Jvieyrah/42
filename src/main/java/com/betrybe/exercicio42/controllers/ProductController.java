@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,14 +32,14 @@ public class ProductController {
   }
 
   @PostMapping
-  ResponseEntity<ResponseDTO<Product>> createProduct(ProductDTO productDTO) {
+  ResponseEntity<ResponseDTO<Product>> createProduct(@RequestBody ProductDTO productDTO) {
     Product product = productService.insertProduct(productDTO.toProduct());
     ResponseDTO<Product> newProduct = new ResponseDTO<>("Produto criado com sucesso!", product);
     return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
   }
 
   @PutMapping("/{id}")
-  ResponseEntity<ResponseDTO<Product>> updateProduct(@PathVariable Long id, ProductDTO productDTO){
+  ResponseEntity<ResponseDTO<Product>> updateProduct(@PathVariable Long id,@RequestBody ProductDTO productDTO){
    Optional<Product> product = productService.updateProduct(id, productDTO.toProduct());
    if (product.isEmpty()){
      ResponseDTO<Product> notFoundProduct = new ResponseDTO<>("Produto não encontrado!", null);

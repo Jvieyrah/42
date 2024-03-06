@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,14 +31,14 @@ public class CategoryController {
   }
 
   @PostMapping
-  ResponseEntity<ResponseDTO<Category>> createCategory(CategoryDTO categoryDTO) {
+  ResponseEntity<ResponseDTO<Category>> createCategory(@RequestBody CategoryDTO categoryDTO) {
     Category category = categoryService.insertCategory(categoryDTO.toCategory());
     ResponseDTO<Category> newCategory = new ResponseDTO<>("Categoria criada com sucesso!", category);
     return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
   }
 
   @PutMapping("/{id}")
-  ResponseEntity<ResponseDTO<Category>> updateCategory(@PathVariable Long id, CategoryDTO categoryDTO) {
+  ResponseEntity<ResponseDTO<Category>> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
     Optional<Category> category = categoryService.updateCategory(id, categoryDTO.toCategory());
     if (category.isEmpty()) {
       ResponseDTO<Category> notFoundCategory = new ResponseDTO<>("Categoria não encontrada!", null);
