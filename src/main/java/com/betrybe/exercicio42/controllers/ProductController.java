@@ -13,31 +13,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/products")
-public class ProductControllers {
+public class ProductController {
 
   private final ProductService productService;
 
 @Autowired
-  public ProductControllers(ProductService productService) {
+  public ProductController(ProductService productService) {
     this.productService = productService;
   }
 
   @PostMapping
-  ResponseEntity<ResponseDTO<Product>> createProduct(ProductDTO productDTO) {
+  ResponseEntity<ResponseDTO<Product>> createProduct(@RequestBody ProductDTO productDTO) {
     Product product = productService.insertProduct(productDTO.toProduct());
     ResponseDTO<Product> newProduct = new ResponseDTO<>("Produto criado com sucesso!", product);
     return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
   }
 
   @PutMapping("/{id}")
-  ResponseEntity<ResponseDTO<Product>> updateProduct( Long id, ProductDTO productDTO){
+  ResponseEntity<ResponseDTO<Product>> updateProduct(@PathVariable Long id,@RequestBody ProductDTO productDTO){
    Optional<Product> product = productService.updateProduct(id, productDTO.toProduct());
    if (product.isEmpty()){
      ResponseDTO<Product> notFoundProduct = new ResponseDTO<>("Produto não encontrado!", null);
@@ -48,7 +50,7 @@ public class ProductControllers {
   }
 
   @DeleteMapping("/{id}")
-  ResponseEntity<ResponseDTO<Product>> removeProduct( Long id) {
+  ResponseEntity<ResponseDTO<Product>> removeProduct(@PathVariable Long id) {
     Optional<Product> product = productService.removeProduct(id);
     if (product.isEmpty()){
       ResponseDTO<Product> notFoundProduct = new ResponseDTO<>("Produto não encontrado!", null);
@@ -59,7 +61,7 @@ public class ProductControllers {
   }
 
   @GetMapping("/{id}")
-  ResponseEntity<ResponseDTO<Product>> getProductById ( Long id) {
+  ResponseEntity<ResponseDTO<Product>> getProductById (@PathVariable Long id) {
     Optional<Product> product = productService.getProductByID(id);
     if (product.isEmpty()){
       ResponseDTO<Product> notFoundProduct = new ResponseDTO<>("Produto não encontrado!", null);
